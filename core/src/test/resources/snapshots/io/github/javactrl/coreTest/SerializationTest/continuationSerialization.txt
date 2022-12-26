@@ -1,0 +1,55 @@
+loop-wrap
+enter-loop
+before-suspend: i=0, acc=0
+before-resume: u.payload=0
+after-suspend: i=0, val=0, acc=0
+before-suspend: i=1, acc=0
+before-resume: u.payload=1
+after-suspend: i=1, val=10, acc=10
+before-suspend: i=2, acc=10
+before-resume: u.payload=2
+after-suspend: i=2, val=20, acc=30
+before-suspend: i=3, acc=30
+before-resume: u.payload=3
+after-suspend: i=3, val=30, acc=60
+before-suspend: i=4, acc=60
+before-resume: u.payload=4
+after-suspend: i=4, val=40, acc=100
+before-suspend: i=5, acc=100
+before-resume: u.payload=5
+after-suspend: i=5, val=50, acc=150
+before-suspend: i=6, acc=150
+before-resume: u.payload=6
+after-suspend: i=6, val=60, acc=210
+before-suspend: i=7, acc=210
+before-resume: u.payload=7
+after-suspend: i=7, val=70, acc=280
+before-suspend: i=8, acc=280
+before-resume: u.payload=8
+after-suspend: i=8, val=80, acc=360
+before-suspend: i=9, acc=360
+before-resume: u.payload=9
+after-suspend: i=9, val=90, acc=450
+exit-loop: acc=450
+loop-wrap-exit
+after-resume: res=450 -- executed once
+before-resume-saved: u.payload=4
+after-suspend: i=4, val=40, acc=100
+before-suspend: i=5, acc=100
+before-resume-saved: u.payload=5
+after-suspend: i=5, val=50, acc=150
+before-suspend: i=6, acc=150
+before-resume-saved: u.payload=6
+after-suspend: i=6, val=60, acc=210
+before-suspend: i=7, acc=210
+before-resume-saved: u.payload=7
+after-suspend: i=7, val=70, acc=280
+before-suspend: i=8, acc=280
+before-resume-saved: u.payload=8
+after-suspend: i=8, val=80, acc=360
+before-suspend: i=9, acc=360
+before-resume-saved: u.payload=9
+after-suspend: i=9, val=90, acc=450
+exit-loop: acc=450
+loop-wrap-exit
+after-resume-saved: res=450 -- executed once

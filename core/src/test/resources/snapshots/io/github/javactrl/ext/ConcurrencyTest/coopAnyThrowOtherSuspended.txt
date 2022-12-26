@@ -1,0 +1,5 @@
+anyOf-2
+thrown immediately test1
+anyOf-2
+anyOf-2: t=2
+thrown immediately test2

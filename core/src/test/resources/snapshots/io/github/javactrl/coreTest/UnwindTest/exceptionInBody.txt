@@ -1,0 +1,7 @@
+enter
+catch-unwind
+after-raise
+in-generic-catch: IOException, throw-in-body
+in-finally - executed once
+resume-catch: throw-in-body
+after-wind

@@ -1,0 +1,99 @@
+plugins {
+  id 'application'
+  id 'maven-publish'
+  id 'signing'
+}
+
+group = 'io.github.javactrl'
+version = '1.0.1'
+archivesBaseName = 'javactrl-core'
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
+  implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+  testImplementation project(':test-kit')
+}
+
+jar {
+  manifest {
+    attributes 'Main-Class': 'io.github.javactrl.instrument.Main',
+      'Premain-Class': 'io.github.javactrl.instrument.Main',
+      'Automatic-Module-Name': 'io.github.javactrl.core'
+  }
+}
+
+test {
+  dependsOn = [jar]
+  useJUnitPlatform()
+  project.afterEvaluate {
+    jvmArgs "-javaagent:${jar.archivePath}"
+  }
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = 'javactrl-core'
+      from components.java
+      versionMapping {
+        usage('java-api') {
+          fromResolutionOf('runtimeClasspath')
+        }
+        usage('java-runtime') {
+          fromResolutionResult()
+        }
+      }
+      pom {
+        name = 'javactrl-core'
+        description = 'Resumable exceptions for JVM'
+        url = 'https://github.com/javactrl'
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id = 'vitalii.akimov'
+            name = 'Vitalii Akimov'
+            email = 'vitaliy.akimov@gmail.com'
+          }
+        }
+        scm {
+          connection = 'scm:git:git://github.com/javactrl/javactrl.git'
+          developerConnection = 'scm:git:ssh://github.com:javactrl/javactrl.git'
+          url = 'http://github.com/javactrl/javactrl/tree/master'
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/javactrl/javactrl")
+      credentials {
+          username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+          password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+      }
+    }
+  }
+}
+
+signing {
+  sign publishing.publications.mavenJava
+}
+
+javadoc {
+  options.addBooleanOption('html5', true)
+}

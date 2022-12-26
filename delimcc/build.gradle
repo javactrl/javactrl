@@ -1,0 +1,82 @@
+plugins {
+  id 'java-library'
+  id 'maven-publish'
+  id 'signing'
+}
+
+group = 'io.github.javactrl'
+version = '1.0.1'
+archivesBaseName = 'javactrl-delimcc'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+  testImplementation project(':test-kit')
+  implementation project(':core')
+}
+
+jar {
+  manifest {
+    attributes 'Automatic-Module-Name': 'io.github.javctrl.delimcc'
+  }
+}
+
+test {
+  useJUnitPlatform()
+  project.afterEvaluate {
+    jvmArgs "-javaagent:${project(":core").jar.archivePath}"
+  }
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      artifactId = 'javactrl-delimcc'
+      from components.java
+      pom {
+        name = 'javactrl-delimcc'
+        description = 'Resumable exceptions for JVM'
+        url = 'https://github.com/javactrl'
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        developers {
+          developer {
+            id = 'vitalii.akimov'
+            name = 'Vitalii Akimov'
+            email = 'vitaliy.akimov@gmail.com'
+          }
+        }
+        scm {
+          connection = 'scm:git:git://github.com/javactrl/javactrl.git'
+          developerConnection = 'scm:git:ssh://github.com:javactrl/javactrl.git'
+          url = 'http://github.com/javactrl/javactrl/tree/master'
+        }
+      }
+    }
+  }
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/javactrl/javactrl")
+      credentials {
+          username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+          password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+      }
+    }
+  }
+}
+
+signing {
+  sign publishing.publications.mavenJava
+}
+
+javadoc {
+  options.addBooleanOption('html5', true)
+}

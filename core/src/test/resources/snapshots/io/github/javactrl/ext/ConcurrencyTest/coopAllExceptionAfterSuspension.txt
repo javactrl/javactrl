@@ -1,0 +1,11 @@
+# one of the threads thrown an exception after suspension
+## others exited
+thrown test1
+## throw resumed
+thrown test1
+## there are other suspnded threads
+thrown test2
+## one of the other threads was resumed
+thrown test2
+## another thread thrown earlier
+thrown testz

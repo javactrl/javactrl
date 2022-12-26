@@ -1,0 +1,20 @@
+block-started
+in-handler1: x=2
+in-handler2: x=2, y=10
+future-returned: ret=20
+block-started
+in-handler1: x=2
+in-handler2: x=2, y=10
+future-returned: ret=20
+block-started
+in-handler1: x=2
+in-handler2: x=2, y=10
+future-returned: ret=20
+block-started
+in-handler1: x=2
+in-handler2: x=2, y=10
+future-returned: ret=20
+block-started
+in-handler1: x=2
+in-handler2: x=2, y=10
+future-returned: ret=20

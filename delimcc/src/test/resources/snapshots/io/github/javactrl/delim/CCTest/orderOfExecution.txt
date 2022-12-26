@@ -1,0 +1,17 @@
+enter: someLibraryMethodReturnsTrue
+pushPrompt1
+withSubCont1.0
+pushPrompt1: t1=100 --- executed twice
+withSubCont1.1: v1=1000
+pushPrompt1: t1=200 --- executed twice
+withSubCont1.2: v2=2000
+exit1: r1=3000
+pushPrompt2
+withSubCont2
+pushSubCont2.1
+pushSubCont2.2
+pushPrompt2: t1=800 --- executed twice
+pushSubCont2.1: t3=803
+pushPrompt2: t1=804 --- executed twice
+withSubCont2: t2=807
+exit2: r2=809

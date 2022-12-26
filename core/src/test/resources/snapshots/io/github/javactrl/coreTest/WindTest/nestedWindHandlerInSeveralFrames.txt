@@ -1,0 +1,58 @@
+enter: count=true (true, true, true, true)
+enter-f1: a=F1
+enter-f2: b=F1, count2=0
+catch-unwind: payload=payload1, count=0
+wind3: w.value=unwind1, count=1
+wind2b: w.value=unwind1, count1=0
+wind2a: w.value=unwind1, count1=1
+wind1: w.value=unwind1, count2=1
+exit-f2: ret=unwind1, count2=2
+after-wind1: ret=unwind1, count2=3
+exit-f1 a=F1, count1=2
+after-wind2a: ret=unwind1, count1=3
+after-wind2b: ret=unwind1, count=14
+exit3: a=unwind1, count=2
+after-wind3: ret=unwind1, count=3
+after-wind: wret=ret1(unwind1,4), count=1
+enter: count=true (false, true, true, true)
+enter-f1: a=F1
+enter-f2: b=F1, count2=0
+catch-unwind: payload=payload1, count=0
+wind3: w.value=unwind1, count=1
+wind2b: w.value=unwind1, count1=0
+wind2a: w.value=unwind1, count1=1
+wind1: w.value=unwind1, count2=1
+after-wind1: ret=?1, count2=2
+exit-f1 a=F1, count1=2
+after-wind2a: ret=?1, count1=3
+after-wind2b: ret=?1, count=14
+exit3: a=?1, count=2
+after-wind3: ret=?1, count=3
+after-wind: wret=ret1(?1,4), count=1
+enter: count=true (false, false, true, true)
+enter-f1: a=F1
+enter-f2: b=F1, count2=0
+catch-unwind: payload=payload1, count=0
+wind3: w.value=unwind1, count=1
+wind2b: w.value=unwind1, count1=0
+after-wind2b: ret=?2, count=11
+exit3: a=?2, count=2
+after-wind3: ret=?2, count=3
+after-wind: wret=ret1(?2,4), count=1
+enter: count=true (false, false, false, true)
+enter-f1: a=F1
+enter-f2: b=F1, count2=0
+catch-unwind: payload=payload1, count=0
+wind3: w.value=unwind1, count=1
+wind2b: w.value=unwind1, count1=0
+after-wind2b: ret=?2, count=11
+exit3: a=?2, count=2
+after-wind3: ret=?2, count=3
+after-wind: wret=ret1(?2,4), count=1
+enter: count=true (false, false, false, false)
+enter-f1: a=F1
+enter-f2: b=F1, count2=0
+catch-unwind: payload=payload1, count=0
+wind3: w.value=unwind1, count=1
+after-wind3: ret=?3, count=2
+after-wind: wret=ret1(?3,3), count=1

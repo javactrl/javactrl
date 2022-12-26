@@ -1,0 +1,2 @@
+# all threads are exited immediately, one of them thrown an exception
+# all threads are exited immediately, two of them thrown an exception

@@ -1,0 +1,12 @@
+enter: withRethrow=false
+CThrowable-catch-section: should be called only for unwind io.github.javactrl.rt.Unwind
+catch-unwind: payload=payload1
+in-wind: ret=unwind1
+after-wind: wret=ret1(default)
+enter: withRethrow=true
+CThrowable-catch-section: should be called only for unwind io.github.javactrl.rt.Unwind
+catch-unwind: payload=payload1
+in-wind: ret=unwind1
+after-raise: ret=unwind1
+finally-section: should be called only once
+after-wind: wret=ret1(unwind1)

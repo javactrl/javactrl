@@ -1,0 +1,7 @@
+enter: unwound=0
+catch-unwind: payload=payload0, unwound=0
+after-raise1: ret1=unwind1, unwound=1
+catch-unwind: payload=payload1, unwound=1
+after-raise2: ret1=unwind1, ret2=unwind2, unwound=2
+after-wind: wret=ret1(unwind1,unwind2), unwound=true
+after-wind: wret=ret2(ret1(unwind1,unwind2),2), unwound=true

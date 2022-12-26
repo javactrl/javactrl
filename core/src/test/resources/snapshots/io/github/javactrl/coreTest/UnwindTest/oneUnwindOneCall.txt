@@ -1,0 +1,4 @@
+init: unwound=false
+catch-unwind: payload=payload1, unwound=false
+after-raise: ret=unwind1, unwound=true
+after-wind: wret=ret1(unwind1), unwound=true

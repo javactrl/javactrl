@@ -1,0 +1,15 @@
+plugins {
+  id 'java-library'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
+javadoc {
+  enabled false
+}

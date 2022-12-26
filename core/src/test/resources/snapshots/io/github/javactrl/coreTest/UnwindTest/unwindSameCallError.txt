@@ -1,0 +1,4 @@
+enter: unwound=false
+unwindSame:catch unwind: payload=payload1, unwound=false
+in-catch-io-exception: raise: ret=0, unwound=false, e=java.io.IOException: unwind1(payload1)
+exit-unwind

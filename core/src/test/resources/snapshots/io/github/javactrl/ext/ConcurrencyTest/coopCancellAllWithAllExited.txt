@@ -1,0 +1,4 @@
+cancelled
+thrown cancel1 - once!
+catchHandler cancel1 - once!
+done!

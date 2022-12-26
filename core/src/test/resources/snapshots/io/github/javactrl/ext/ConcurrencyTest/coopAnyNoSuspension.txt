@@ -1,0 +1,3 @@
+anyOf-1
+# first thread throws
+# more than one throws

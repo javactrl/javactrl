@@ -1,0 +1,27 @@
+# something returned immediately
+anyOf-2
+cancelled
+any-returned=11
+# something returned after resuming
+anyOf-2
+anyOf-2: t=1
+cancelled
+any-returned=11
+# something returned immediately, supeended after cancel
+anyOf-1
+anyOf-2
+cancelled
+start
+t recv: 2
+any-returned=11
+x2-set
+# something returned after resuming, suspended after cancel
+anyOf-1
+anyOf-2
+start
+anyOf-2: t=1
+cancelled
+y-set
+t recv: 2
+any-returned=11
+x2-set

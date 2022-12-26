@@ -1,0 +1,10 @@
+# cancelation token is thrown
+thrown test2 - once!
+cancelled
+done!
+# suspend after cancel
+cancelled
+resume z2
+z2-resumed = 8
+catch test2
+done!

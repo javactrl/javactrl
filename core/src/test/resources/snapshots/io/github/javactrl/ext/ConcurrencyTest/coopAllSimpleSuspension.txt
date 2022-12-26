@@ -1,0 +1,4 @@
+# one suspended 
+# all threads are suspended once
+# all threads are suspended once, but in reverse order
+# different number of supensions

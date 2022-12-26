@@ -1,0 +1,17 @@
+.gradle
+**/build/
+!src/**/build/
+bin
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+.gradletasknamecache
+.project
+.classpath
+.vscode
+.devcontainer
+*.db
+*.db-journal
+tmp
+*.dump
+_dumps_

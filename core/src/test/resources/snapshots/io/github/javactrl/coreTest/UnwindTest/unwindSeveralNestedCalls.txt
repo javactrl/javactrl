@@ -1,0 +1,11 @@
+init: unwound=false, count=0
+enter-f1: a=A1(0)
+enter-f2: b=A1(0)
+catch-unwind: payload=payload1, unwound=false, count=1
+middle-f2: b=A1(0), ret1=unwind2
+catch-unwind: payload=payload1, unwound=true, count=3
+exit-f2: ret1=unwind2, ret2=unwind4
+exit-f1: a=A1(0)
+exit1: a=retF1(retF2(unwind2,unwind4)), count=5
+after-wind: wret=retBody(retF1(retF2(unwind2,unwind4)),6), unwound=true, count=5
+after-wind: wret=retHandler(retBody(retF1(retF2(unwind2,unwind4)),6),6), unwound=true, count=3

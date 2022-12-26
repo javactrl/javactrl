@@ -1,0 +1,53 @@
+before: true 2 3 4 5 6 7.000000 8.000000
+plusByte: p=3
+byteUnwind: 3
+after-plusByte: p=3, l=6, mi=4
+plusInt: p=5
+intUnwind: 5
+after-plusInt: p=5, l=10, mi=6
+plusChar: p=2
+charUnwind: 2
+after-plusChar: p=2, l=4, mc=3
+plusBoolean: p=true
+booleanUnwind: true true
+after-plusBoolean: p=true, l=true, mc=true
+plusLong: p=6
+longUnwind: 6
+after-plusLong: p=6, l=12, ml=7
+plusFloat: p=7.000000
+floatUnwind: 7.000000
+after-plusFloat: p=7.000000, l=14.000000, mf=8.000000
+plusShort: p=4
+shortUnwind: 4
+after-plusShort: p=4, l=8, ms=5
+plusInt: p=5
+intUnwind: 5
+after-plusInt: p=5, l=11, mi=7
+plusLong: p=6
+longUnwind: 6
+after-plusLong: p=6, l=13, ml=8
+plusDouble: p=8.000000
+doubleUnwind: 8.000000
+after-plusDouble: p=8.000000, l=16.000000, md=9.000000
+plusFloat: p=7.000000
+floatUnwind: 7.000000
+after-plusFloat: p=7.000000, l=15.000000, mf=9.000000
+plusBoolean: p=true
+booleanUnwind: true false
+after-plusBoolean: p=true, l=true, mc=true
+plusChar: p=2
+charUnwind: 2
+after-plusChar: p=2, l=5, mc=4
+plusInt: p=5
+intUnwind: 5
+after-plusInt: p=5, l=12, mi=8
+plusChar: p=2
+charUnwind: 2
+after-plusChar: p=2, l=6, mc=5
+plusShort: p=4
+shortUnwind: 4
+after-plusShort: p=4, l=9, ms=6
+plusDouble: p=8.000000
+doubleUnwind: 8.000000
+after-plusDouble: p=8.000000, l=17.000000, md=10.000000
+after: true 5 4 6 8 8 9.000000 10.000000

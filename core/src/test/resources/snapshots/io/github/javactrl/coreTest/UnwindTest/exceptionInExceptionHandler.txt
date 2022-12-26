@@ -1,0 +1,6 @@
+enter
+catch-unwind
+in-generic-catch: IOException, resuming
+in-finally - executed once
+resume-catch: resuming
+after-wind

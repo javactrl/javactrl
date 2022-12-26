@@ -1,0 +1,10 @@
+Unwind-x called once
+Unwind-y called once
+Unwind-z called once
+allOf Unwind - called once
+everything sleeps
+Wind-x called once
+Wind-y called once
+Wind-z called once
+allOf Wind - called once
+done!

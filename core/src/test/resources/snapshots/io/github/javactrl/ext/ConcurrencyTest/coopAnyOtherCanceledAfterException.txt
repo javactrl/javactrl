@@ -1,0 +1,28 @@
+# something thrown immediately
+anyOf-1
+anyOf-2
+cancelled
+exception: test1
+# something thrown after resuming
+anyOf-1
+anyOf-2
+anyOf-2: t=2
+cancelled
+throw test2
+# something thrown immediately, supeended after cancel
+anyOf-1
+anyOf-2
+cancelled
+start
+t recv: 2
+exception test3
+x2-set
+# something returned after resuming, suspended after cancel
+anyOf-1
+anyOf-2
+start
+cancelled
+y-set
+t recv: 2
+exception test4
+x2-set
