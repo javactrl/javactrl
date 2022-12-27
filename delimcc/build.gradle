@@ -5,11 +5,20 @@ plugins {
 }
 
 group = 'io.github.javactrl'
-version = '1.0.1'
+version = '1.0.2'
 archivesBaseName = 'javactrl-delimcc'
+
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
 
 repositories {
   mavenCentral()
+}
+
+compileJava {
+  options.release = 11
 }
 
 dependencies {
@@ -26,9 +35,7 @@ jar {
 
 test {
   useJUnitPlatform()
-  project.afterEvaluate {
-    jvmArgs "-javaagent:${project(":core").jar.archivePath}"
-  }
+  jvmArgs "-javaagent:${project(":core").jar.archivePath}"
 }
 
 publishing {
@@ -63,11 +70,11 @@ publishing {
   }
   repositories {
     maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/javactrl/javactrl")
+      name = "OSSRH"
+      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
       credentials {
-          username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-          password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USERNAME")
+        password = project.findProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
       }
     }
   }

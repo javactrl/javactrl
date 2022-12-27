@@ -1,6 +1,7 @@
 # JVM continuations
 
 ![CI](https://github.com/javactrl/javactrl/actions/workflows/main.yml/badge.svg)
+[![javadoc](https://javadoc.io/badge2/io.github.javactrl/javactrl-core/javadoc.svg)](https://javadoc.io/doc/io.github.javactrl/javactrl-core)
 
 This library is yet another implementation of delimited continuations for JVM using bytecode instrumentation. It primarily implements resumable exceptions. And there is also a classical multi-prompt delimited continuations implementation based on the resumable exceptions.
 
@@ -8,9 +9,9 @@ Use plain Java exception handling to capture, compose and run parts of programs'
 
 Unlike the common perception, continuations are easy and incredibly helpful for achieving a cleaner code that is much simpler to read, write and maintain. For sure, it's easier to produce a more obscure code with continuations, but we can have the same horrible code without them too. However, continuations provide opportunities to make everything better in an easy way. This is already proven in many programming languages with coroutines (or single-shot continuations) used for asynchronous functions or generators.
 
-But continuations can give even more if extended a bit. For example, the continuations can simplify microservices orchestration logic in enterprise event-based applications. These are usually many small event handlers with vague and unintended dependencies, fragile and hard to reason and extend. However, with continuations, the same orchestrator can be a simple direct style code, mapping domain logic to code one-to-one, simple to write, test, maintain, and modify.
+But continuations can give even more if extended a bit. For example, the continuations can simplify microservices orchestration logic in enterprise event-based applications (like Kafka Workflows by [javactrl-kafka](https://github.com/javactrl/javactrl-kafka)). These are usually many small event handlers with vague and unintended dependencies, fragile and hard to reason and extend. However, with continuations, the same orchestrator can be a simple direct style code, mapping domain logic to code one-to-one, simple to write, test, maintain, and modify.
 
-This library extends Java exceptions. There are two new special exception classes (namely `Wind` and `Unwind`). 
+This library extends Java exceptions. There are two new special exception classes (namely [Wind](https://javadoc.io/doc/io.github.javactrl/javactrl-core/latest/io/github/javactrl/rt/Wind.html) and [Unwind](https://javadoc.io/doc/io.github.javactrl/javactrl-core/latest/io/github/javactrl/rt/Unwind.html)). 
 
 Exceptions with the `Unwind` type (or its descendants) work the same as any checked Java exception, except it's possible to continue executing the code after their `throw`. And it's even possible to do this more than once. 
 
@@ -31,7 +32,7 @@ class Example1 {
 }
 ```
 
-The `@Ctrl` annotation enables every function in the class (including lamdas) for instrumentation. In the this way marked classes, every function with  `CThrowable` in its exception specification is transformed to support delimited continuations. The `CThrowable` class is a parent for both `Unwind` and `Wind`. And the `head` field of the `Unwind` object stores the last call frame of the captured call stack. If it's `null` it means the code wasn't instrumented.
+The [@Ctrl](https://javadoc.io/doc/io.github.javactrl/javactrl-core/latest/io/github/javactrl/rt/Ctrl.html) annotation enables every function in the class (including lamdas) for instrumentation. In the this way marked classes, every function with  [CThrowable](https://javadoc.io/doc/io.github.javactrl/javactrl-core/latest/io/github/javactrl/rt/CThrowable.html) in its exception specification is transformed to support delimited continuations. The `CThrowable` class is a parent for both `Unwind` and `Wind`. And the `head` field of the `Unwind` object stores the last call frame of the captured call stack. If it's `null` it means the code wasn't instrumented.
 
 Since `throw` is a statement in Java and doesn't assume it may return anything, there is a helper function `Unwind::brk`, which contains just a single `throw`. Its result is the value we passed as an argument for `resume`. The argument of the `Unwind` constructor is just assigned to its `payload` field. Users may want to implement a similar function to extend its checked exceptions list. 
 
@@ -107,9 +108,33 @@ Library usages requires bytecode instrumentation. The easiest way is to pass its
   -javaagent:path-to-jvactrl-core-jar.jar 
 ```
 
-TODO: maven/gradle
+#### Gradle
 
-## AOT instrumentation
+Gradle tasks running users code (such as `test`, `runExecutableJar`) usually have `jvmArgs` parameter. 
+To get the path to the jar using configurations:
+
+```gradle
+configurations {
+    javactrl
+}
+
+dependencies {
+    implementation 'io.github.javactrl:javactrl-core:1.0.2'
+    javactrl 'io.github.javactrl:javactrl-core:1.0.2'
+}
+```
+
+And for the task where `jvmArgs` is applicable use `jvmArgs "-javaagent:${configurations.javactrl.iterator().next()}"`, for example:
+
+```gradle
+task runExecutableJar(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'my.example'
+    jvmArgs "-javaagent:${configurations.javactrl.iterator().next()}"
+}
+```
+
+### AOT instrumentation
 
 It's possible to instrument ahead of time. For this run, execute the .jar file passing as its argument paths for input and output .class files.
 

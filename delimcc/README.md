@@ -1,5 +1,7 @@
 # Multi-prompt delimited continuations
 
+[![javadoc](https://javadoc.io/badge2/io.github.javactrl/javactrl-delimcc/javadoc.svg)](https://javadoc.io/doc/io.github.javactrl/javactrl-delimcc)
+
 This library implements operators from 
 [A Monadic Framework for Delimited Continuations](https://cs.indiana.edu/~dyb/pubs/monadicDC.pdf) paper.
 

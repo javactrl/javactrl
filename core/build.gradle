@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.javactrl'
-version = '1.0.1'
+version = '1.0.2'
 archivesBaseName = 'javactrl-core'
 
 java {
@@ -15,6 +15,10 @@ java {
 
 repositories {
   mavenCentral()
+}
+
+compileJava {
+  options.release = 11
 }
 
 dependencies {
@@ -80,11 +84,11 @@ publishing {
   }
   repositories {
     maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/javactrl/javactrl")
+      name = "OSSRH"
+      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
       credentials {
-          username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-          password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USERNAME")
+        password = project.findProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
       }
     }
   }
