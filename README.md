@@ -142,7 +142,7 @@ There are currently no build system plugins, but, for example, in gradle [JavaEx
 
 ## Examples
 
-It's well known we can represent any monad with delimited continuations. There is a paper about this - [Representing Monad](https://dl.acm.org/doi/10.1145/174675.178047). The paper is hard to read without functional programming experience. But with javactrl, you don't even need to know what Monad is to get all the benefits.
+It's well known from functional programming we can represent any monad with delimited continuations. There is a paper about this - [Representing Monad](https://dl.acm.org/doi/10.1145/174675.178047). The paper is hard to read without functional programming experience. But with javactrl, you don't even need to know what Monad is to get all the benefits.
 
 The Java type system doesn't let us define usable abstract Monad, but it's pretty simple to make a representation for concrete ones. So let's first represent `java.util.stream.Stream`. The code from the paper can be translated into javactrl this way:
 
@@ -236,7 +236,7 @@ For completeness, there is a runner for async code using `java.util.concurrent.C
 
 There `SyncUnwind` and `AsyncUnwind` are the same simple subclasses of `Unwind`. As you can see, we can continue the execution either synchronously or asynchronously. This is unlike, for example, JavaScript async/await, where we can only continue asynchronously after the Promise is resolved there. 
 
-It's well known how the switching from async operations callbacks to direct style async code (for example, async/await in JavaScript) helps to clean up the code. Even better results can be achieved by using direct style code in event-based applications where using small callbacks is common. This is implemented in another library for creating Apache Kafka-based workflow definitions.
+Switching from async operations callbacks to direct style async code (for example, async/await in JavaScript) helps to clean up the code. Even better results can be achieved by using direct style code in event-based applications where using small callbacks is common. This is implemented in another library for creating Apache Kafka-based workflow definitions.
 
 ## Caveats
 

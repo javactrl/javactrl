@@ -17,4 +17,9 @@ public class CThrowable extends Throwable {
   public CThrowable(String message) {
     super(message);
   }
+
+  @Override
+  public Throwable fillInStackTrace() {
+    return this;
+  }
 }
