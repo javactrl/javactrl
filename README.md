@@ -66,11 +66,11 @@ The `Wind` exceptions are even more special - they propagate in the reverse dire
 ```java
   var a = allocateResourceA();
   try {
-	    var b = allocateResourceB(a);
+      var b = allocateResourceB(a);
       // ....
-	    try {
-        // ....
-	    } catch(Wind w) {
+      try {
+      // ....
+      } catch(Wind w) {
         b.unparkB(a);
         throw w;
       }
