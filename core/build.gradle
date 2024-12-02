@@ -22,7 +22,7 @@ compileJava {
 }
 
 dependencies {
-  implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
+  implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.7.1'
   implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.7'
   testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
   testImplementation project(':test-kit')
