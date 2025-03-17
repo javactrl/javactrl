@@ -22,7 +22,7 @@ compileJava {
 }
 
 dependencies {
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
   testImplementation project(':test-kit')
   implementation project(':core')
 }
