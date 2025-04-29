@@ -22,6 +22,10 @@ import io.github.javactrl.rt.Wind;
 @Ctrl
 public class Concurrency {
 
+  private Concurrency() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
+
   @Ctrl
   private static abstract class JoinImpl<T> implements Serializable {
 

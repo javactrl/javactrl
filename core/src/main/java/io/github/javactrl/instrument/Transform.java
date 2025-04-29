@@ -36,6 +36,9 @@ import static java.lang.String.format;
  * Byte code instrumentation
  */
 public class Transform {
+  private Transform() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
   /** Checks generated IR */
   public static boolean CHECK = true;
   /** Anotation class to enable this instrumentation for a class */

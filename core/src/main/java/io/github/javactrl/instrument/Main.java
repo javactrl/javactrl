@@ -19,6 +19,10 @@ import static java.lang.String.format;
 /** Entry point to JavaAgent and AOT instrumentation tool */
 public class Main {
 
+  private Main() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
+
   /** dump instrumented classes */
   public static boolean DEBUG = false;
 

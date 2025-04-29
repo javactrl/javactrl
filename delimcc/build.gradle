@@ -5,8 +5,10 @@ plugins {
 }
 
 group = 'io.github.javactrl'
-version = '1.0.2'
-archivesBaseName = 'javactrl-delimcc'
+version = '1.1.0'
+base {
+  archivesName = 'javactrl-delimcc'
+}
 
 java {
   withJavadocJar()
@@ -22,8 +24,9 @@ compileJava {
 }
 
 dependencies {
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
   testImplementation project(':test-kit')
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
   implementation project(':core')
 }
 
@@ -35,7 +38,7 @@ jar {
 
 test {
   useJUnitPlatform()
-  jvmArgs "-javaagent:${project(":core").jar.archivePath}"
+  jvmArgs "-javaagent:${project(":core").jar.archiveFile.get().asFile}"
 }
 
 publishing {
