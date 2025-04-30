@@ -1,12 +1,14 @@
 plugins {
   id 'application'
   id 'maven-publish'
-  id 'signing'
+  id 'org.jreleaser' version '1.17.0'
 }
 
 group = 'io.github.javactrl'
-version = '1.0.2'
-archivesBaseName = 'javactrl-core'
+version = '1.1.1'
+base {
+  archivesName = 'javactrl-core'
+}
 
 java {
   withJavadocJar()
@@ -22,10 +24,11 @@ compileJava {
 }
 
 dependencies {
-  implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.7.1'
-  implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.7.1'
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+  implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.8'
+  implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.8'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
   testImplementation project(':test-kit')
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 jar {
@@ -36,17 +39,17 @@ jar {
   }
 }
 
-test {
-  dependsOn = [jar]
-  useJUnitPlatform()
-  project.afterEvaluate {
-    jvmArgs "-javaagent:${jar.archivePath}"
-  }
-}
+// test {
+//   useJUnitPlatform()
+//   dependsOn = [jar]
+//   project.afterEvaluate {
+//     jvmArgs "-javaagent:${jar.archiveFile.get().asFile}"
+//   }
+// }
 
 publishing {
   publications {
-    mavenJava(MavenPublication) {
+    maven(MavenPublication) {
       artifactId = 'javactrl-core'
       from components.java
       versionMapping {
@@ -61,6 +64,7 @@ publishing {
         name = 'javactrl-core'
         description = 'Resumable exceptions for JVM'
         url = 'https://github.com/javactrl'
+        inceptionYear = '2022'
         licenses {
           license {
             name = 'The Apache License, Version 2.0'
@@ -84,20 +88,32 @@ publishing {
   }
   repositories {
     maven {
-      name = "OSSRH"
-      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-      credentials {
-        username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USERNAME")
-        password = project.findProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
-      }
+      url = layout.buildDirectory.dir('staging-deploy')
     }
   }
-}
 
-signing {
-  sign publishing.publications.mavenJava
 }
 
 javadoc {
   options.addBooleanOption('html5', true)
 }
+
+jreleaser {
+  signing {
+    active = 'ALWAYS'
+    armored = true
+  }
+  gitRootSearch = true
+  deploy {
+    maven {
+      mavenCentral {
+        sonatype {
+          active = 'ALWAYS'
+          url = 'https://central.sonatype.com/api/v1/publisher'
+          stagingRepository('build/staging-deploy')
+        }
+      }
+    }
+  }
+}
+

@@ -36,8 +36,11 @@ import static java.lang.String.format;
  * Byte code instrumentation
  */
 public class Transform {
+  private Transform() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
   /** Checks generated IR */
-  public static boolean CHECK = true;
+  public static boolean CHECK = false;
   /** Anotation class to enable this instrumentation for a class */
   public static String enablingAnnotation = "Lio/github/javactrl/rt/Ctrl;";
   /**  The predicate to select methods to instrument */

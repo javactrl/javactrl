@@ -12,6 +12,7 @@ import static java.lang.String.format;
  * 
  * Every method starting with "_" is supposed to be called from the instrumented code.
  */
+@SuppressWarnings("UseSpecificCatch")
 public class CallFrame implements Cloneable, Serializable {
 
   /** 

@@ -19,14 +19,14 @@ import org.opentest4j.AssertionFailedError;
 
 public class OutputSnapshotExtension implements BeforeEachCallback, AfterEachCallback  {
 
-  private static final String snapshotsFolder = "src/test/resources/snapshots";
+  private static final String SNAPHOTS_FOLDER = "src/test/resources/snapshots";
   private PrintStream out;
   private String snapshotFile;
 
   @Override
   public void beforeEach(final ExtensionContext context) throws Exception {
     final var testClass = context.getRequiredTestClass();
-    final var classFolder = String.format("%s/%s", snapshotsFolder, testClass.getName().replace('.', '/'));
+    final var classFolder = String.format("%s/%s", SNAPHOTS_FOLDER, testClass.getName().replace('.', '/'));
     Files.createDirectories(Path.of(classFolder));
     snapshotFile = String.format("%s/%s.txt", classFolder, context.getRequiredTestMethod().getName());
     final var field = AnnotationSupport.findAnnotatedFields(testClass,Snapshot.class).get(0);
@@ -37,7 +37,8 @@ public class OutputSnapshotExtension implements BeforeEachCallback, AfterEachCal
   @Override
   public void afterEach(final ExtensionContext context) throws Exception {
     out.close();
-    if (Runtime.getRuntime().exec("git diff --ignore-space-at-eol --exit-code --quiet "+snapshotFile).waitFor() != 0)
+    String[] args = {"git", "diff", "--ignore-space-at-eol", "--exit-code", "--quiet", snapshotFile};
+    if (Runtime.getRuntime().exec(args).waitFor() != 0)
       throw new AssertionFailedError("changed snapshot file, check `git diff <snapshots folder>` for details");
   }
 }

@@ -3,6 +3,7 @@ package io.github.javactrl.instrument;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.String.format;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
@@ -14,10 +15,13 @@ import java.util.regex.Pattern;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.TraceClassVisitor;
-import static java.lang.String.format;
 
 /** Entry point to JavaAgent and AOT instrumentation tool */
 public class Main {
+
+  private Main() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
 
   /** dump instrumented classes */
   public static boolean DEBUG = false;
@@ -31,7 +35,7 @@ public class Main {
   public static CallPredicate defaultCallPredicate = (owner, name) -> {
     if (owner.startsWith("io/github/javactrl/rt"))
       return name.startsWith("brk") || name.equals("resume");
-    return !predicate.test(owner);
+    return !Main.predicate.test(owner);
   };
 
   /**
@@ -46,27 +50,35 @@ public class Main {
     if (agentArgs != null) {
       final var args = agentArgs.split(",");
       for (final var arg : args) {
-        if (arg.equals("check"))
-          Transform.CHECK = true;
-        else if (arg.equals("debug"))
-          DEBUG = true;
+          switch (arg) {
+              case "check":
+                  Transform.CHECK = true;
+                  break;
+              case "nocheck":
+                  Transform.CHECK = false;
+                  break;
+              case "debug":
+                  DEBUG = true;
+                  break;
+              default:
+                  break;
+          }
       }
     }
     Transform.callPredicate = defaultCallPredicate;
     inst.addTransformer(new ClassFileTransformer() {
       @Override
+      @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
       public byte[] transform(ClassLoader loader, String className,
           Class<?> classBeingRedefined,
           ProtectionDomain protectionDomain, byte[] data)
           throws IllegalClassFormatException {
-        if (className.endsWith("PrimTypes"))
-            System.out.println("P");
         if (predicate.test(className))
           return data;
         try {
           if (DEBUG) {
             System.out.println(format("instrumenting %s...", className));
-            final var dumpFile = new File(format("_dumps_\\%s-in.class", className));
+            final var dumpFile = new File(format("_dumps_/%s-in.class", className));
             dumpFile.getParentFile().mkdirs();
             Files.write(dumpFile.toPath(), data);
             debDump(dumpFile);
@@ -74,7 +86,7 @@ public class Main {
           final var instrumented = Transform.instrumentClass(data);
           if (DEBUG) {
             if (instrumented != null) {
-              final var dumpFile = new File(format("_dumps_\\%s-out.class", className));
+              final var dumpFile = new File(format("_dumps_/%s-out.class", className));
               dumpFile.getParentFile().mkdirs();
               System.out.println(String.format("instrumented %s (dumped into %s)",className, dumpFile.getAbsolutePath()));
               Files.write(dumpFile.toPath(), instrumented);
@@ -85,6 +97,14 @@ public class Main {
           } 
           return instrumented;
         } catch (Throwable e) {
+          if (DEBUG) {
+            final var errFile = new File(format("_dumps_/%s-err.txt", className));
+            try {
+              Files.writeString(errFile.toPath(), e.toString());
+            } catch (IOException e1) {
+              e1.printStackTrace();
+            }
+          }
           e.printStackTrace();
           return data;
         }
@@ -115,12 +135,15 @@ public class Main {
    */
   public static void instrumentClass(final File inFile, final File outFile) throws IOException {
     Transform.callPredicate = defaultCallPredicate;
+    if (DEBUG)
+      debDump(inFile);
     final var inData = Files.readAllBytes(inFile.toPath());
     var outData = Transform.instrumentClass(inData);
     if (outData == null)
       outData = inData;
     Files.write(outFile.toPath(), outData);
-    debDump(outFile);
+    if (DEBUG)
+      debDump(outFile);
   }
 
   /**
@@ -128,6 +151,7 @@ public class Main {
    * 
    * @param args command line arguments
    */
+  @SuppressWarnings("CallToPrintStackTrace")
   public static void main(String args[]) {
     File inputFile = null;
     File outputFile = null;
@@ -140,6 +164,9 @@ public class Main {
             continue;
           case "-check":
             Transform.CHECK = true;
+            continue;
+          case "-nocheck":
+            Transform.CHECK = false;
             continue;
           case "-?":
           case "-help":

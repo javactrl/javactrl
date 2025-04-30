@@ -20,7 +20,12 @@ import io.github.javactrl.rt.Wind;
  * so probably this will be fixed at some point in the future. 
  */
 @Ctrl
+@SuppressWarnings("UseSpecificCatch")
 public class Concurrency {
+
+  private Concurrency() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
 
   @Ctrl
   private static abstract class JoinImpl<T> implements Serializable {
@@ -83,7 +88,6 @@ public class Concurrency {
           if (ignoreResult) {
             if (windToken != null)
               frame.wind(windToken);
-            return;
           } else {
             frame.wind(ex == null ? Wind.createReturn(getResult()) : Wind.createThrow(ex));
           }
@@ -128,7 +132,7 @@ public class Concurrency {
     AllOfImpl(final List<? extends CSupplier<? extends T>> components) {
       super(components);
       remaining = components.size();
-      this.result = new ArrayList<T>(Collections.nCopies(remaining, null));
+      this.result = new ArrayList<>(Collections.nCopies(remaining, null));
     }
 
     @Override

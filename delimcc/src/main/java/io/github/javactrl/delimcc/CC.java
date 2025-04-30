@@ -7,9 +7,18 @@ import io.github.javactrl.rt.CallFrame;
 import io.github.javactrl.rt.Ctrl;
 import io.github.javactrl.rt.Unwind;
 
-/**  */
+/** 
+ * Delimited continuations
+ */
 @Ctrl
 public class CC {
+
+
+  private CC() {
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+  }
+
+
 
   /** 
    * Continuation's scope delimiter 

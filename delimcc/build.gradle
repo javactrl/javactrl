@@ -1,12 +1,14 @@
 plugins {
   id 'java-library'
   id 'maven-publish'
-  id 'signing'
+  id 'org.jreleaser' version '1.17.0'
 }
 
 group = 'io.github.javactrl'
-version = '1.0.2'
-archivesBaseName = 'javactrl-delimcc'
+version = '1.1.1'
+base {
+  archivesName = 'javactrl-delimcc'
+}
 
 java {
   withJavadocJar()
@@ -22,8 +24,9 @@ compileJava {
 }
 
 dependencies {
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
   testImplementation project(':test-kit')
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
   implementation project(':core')
 }
 
@@ -35,7 +38,7 @@ jar {
 
 test {
   useJUnitPlatform()
-  jvmArgs "-javaagent:${project(":core").jar.archivePath}"
+  jvmArgs "-javaagent:${project(":core").jar.archiveFile.get().asFile}"
 }
 
 publishing {
@@ -70,20 +73,41 @@ publishing {
   }
   repositories {
     maven {
-      name = "OSSRH"
-      url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-      credentials {
-        username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USERNAME")
-        password = project.findProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
-      }
+      url = layout.buildDirectory.dir('staging-deploy')
     }
   }
-}
-
-signing {
-  sign publishing.publications.mavenJava
 }
 
 javadoc {
   options.addBooleanOption('html5', true)
 }
+
+jreleaser {
+  signing {
+    active = 'ALWAYS'
+    armored = true
+  }
+  gitRootSearch = true
+  deploy {
+    maven {
+      // nexus2 {
+      //   'maven-central' {
+      //       active = 'ALWAYS'
+      //       url = 'https://s01.oss.sonatype.org/service/local'
+      //       snapshotUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+      //       closeRepository = true
+      //       releaseRepository = true
+      //       stagingRepository('build/staging-deploy')
+      //   }
+      // }
+      mavenCentral {
+        sonatype {
+          active = 'ALWAYS'
+          url = 'https://central.sonatype.com/api/v1/publisher'
+          stagingRepository('build/staging-deploy')
+        }
+      }
+    }
+  }
+}
+

@@ -8,7 +8,7 @@ class InstrumentingExamples {
   InstrumentingExamples() throws CThrowable {
   }
 
-  static InstrumentingExamples constr() throws CThrowable {
+  public static InstrumentingExamples constr() throws CThrowable {
     return new InstrumentingExamples();
   }
 }
