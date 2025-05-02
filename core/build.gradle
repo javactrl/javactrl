@@ -39,13 +39,13 @@ jar {
   }
 }
 
-// test {
-//   useJUnitPlatform()
-//   dependsOn = [jar]
-//   project.afterEvaluate {
-//     jvmArgs "-javaagent:${jar.archiveFile.get().asFile}"
-//   }
-// }
+test {
+  useJUnitPlatform()
+  dependsOn = [jar]
+  project.afterEvaluate {
+    jvmArgs "-javaagent:${jar.archiveFile.get().asFile}"
+  }
+}
 
 publishing {
   publications {
